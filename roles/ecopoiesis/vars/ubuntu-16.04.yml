@@ -1,0 +1,15 @@
+---
+
+ecopoiesis_distro_packages:
+  - ansible
+  - build-essential
+  - git
+  - isc-dhcp-server
+  - htop
+  - nginx
+  - ntp
+  - python-pip
+  - syslinux
+  - tftpd-hpa
+  - tmux
+  - vim

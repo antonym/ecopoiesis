@@ -1,0 +1,13 @@
+---
+ecopoiesis_distro_packages:
+  - dhcp
+  - git
+  - htop
+  - httpd
+  - ntp
+  - python-devel
+  - python-pip
+  - python-requests
+  - tftp-server
+  - tmux
+  - vim
