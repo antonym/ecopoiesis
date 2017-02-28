@@ -2,7 +2,7 @@
 
   - name: restart dhcp service
     service:
-      name: {{ dhcp_service }}
+      name: "{{ dhcp_service }}"
       state: restarted
     ignore_errors: true
 
