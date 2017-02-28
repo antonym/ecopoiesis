@@ -61,7 +61,7 @@ subnet {{ ecopoiesis_public_net }} netmask {{ ecopoiesis_public_nm }} {
 }
 
 # Put a subnet here so that DHCP will fire up on the servicenet network
-subnet {{ ecopoiesis_snet_net }} netmask {{ ecopoiesis_snet_nm }} {
+subnet {{ ecopoiesis_secondary_net }} netmask {{ ecopoiesis_secondary_nm }} {
 }
 
 {% for network in dhcp_ranges %}
@@ -76,14 +76,8 @@ subnet {{ network.mgmt_network }} netmask {{ network.mgmt_netmask }} {
 	option domain-name "{{ network.mgmt_domain }}";
 	option domain-name-servers {{ mgmt_dns }};
         if exists user-class and option user-class = "iPXE" {
-            filename "{{ deploy_webserver_url }}/ecopoiesis.ipxe";
+            filename "http://{{ ecopoiesis_host }}/ecopoiesis.ipxe";
         } elsif option arch = 00:0e {
-            # OpenPower Petitboot, skip iPXE
-        } else {
-            filename "undionly.kpxe";
-        }
-
-        if option arch = 00:0e {
             # OpenPower Petitboot, skip iPXE
         } else {
             filename "undionly.kpxe";

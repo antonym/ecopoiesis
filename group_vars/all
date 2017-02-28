@@ -1,0 +1,22 @@
+---
+  ecopoiesis_host: deploy-server.mycloud.com
+  ecopoiesis_ip: 192.168.100.20
+  ecopoiesis_secondary_host: secondary.deploy-server.mycloud.com
+  ecopoiesis_secondary_ip: 192.168.101.20
+  region: cloud1
+  dhcp_next_server: 192.168.100.20
+  ecopoiesis_primary_net: 192.168.100.0
+  ecopoiesis_primary_nm: 255.255.255.0
+  ecopoiesis_secondary_net: 192.168.101.0
+  ecopoiesis_secondary_nm: 255.255.255.0
+  ecopoiesis_secondary_gw: 192.168.101.1
+  mgmt_dns: 8.8.8.8,8.8.4.4
+
+  dhcp_ranges:
+  - mgmt_domain: cloud1.mycloud.com
+    mgmt_network: 192.168.110.0
+    mgmt_netmask: 255.255.255.0
+    mgmt_gateway: 192.168.110.1
+    mgmt_broadcast: 192.168.110.255
+    dhcp_start: 192.168.110.50
+    dhcp_end: 192.168.110.100
