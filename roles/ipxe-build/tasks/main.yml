@@ -49,12 +49,18 @@
     - /usr/src/ipxe/src/config/local/usb.h
     - /usr/src/ipxe/src/config/local/settings.h
 
-  - name: Compile iPXE
-    shell: "{{ item }}"
+  - name: Compile iPXE disks
+    shell: "make EMBED=ipxe-embed {{ item }}"
     with_items:
-    - make EMBED=ipxe-embed
+    - ipxe.iso
+    - ipxe.lkrn
+    - ipxe.usb
+    - ipxe.dsk
+    - ipxe.pxe
+    - undionly.kpxe
     args:
       chdir: /usr/src/ipxe/src
+  
 
   - name: Create iPXE file directory
     file:
@@ -72,3 +78,4 @@
     - ipxe.usb
     - ipxe.dsk
     - ipxe.pxe
+    - undionly.kpxe

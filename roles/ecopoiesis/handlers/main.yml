@@ -1,8 +1,8 @@
 ---
 
-  - name: restart dhcpd
+  - name: restart dhcp service
     service:
-      name: dhcpd
+      name: {{ dhcp_service }}
       state: restarted
     ignore_errors: true
 

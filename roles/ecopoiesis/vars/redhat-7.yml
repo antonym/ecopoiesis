@@ -1,4 +1,5 @@
 ---
+dhcp_service: dhcpd
 ecopoiesis_distro_packages:
   - dhcp
   - git
