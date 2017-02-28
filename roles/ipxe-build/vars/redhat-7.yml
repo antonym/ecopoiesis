@@ -1,0 +1,9 @@
+---
+ipxe_packages:
+  - gcc
+  - genisoimage
+  - git
+  - httpd
+  - minizip-devel
+  - syslinux
+  - xz-devel

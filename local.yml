@@ -5,3 +5,4 @@
     ecopoiesis_enabled: true
   roles:
     - ecopoiesis
+    - ipxe-build

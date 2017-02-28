@@ -1,0 +1,74 @@
+---
+  - name: Gather variables for each operating system
+    include_vars: "{{ item }}"
+    with_first_found:
+      - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+      - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+      - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+      - "{{ ansible_distribution | lower }}.yml"
+      - "{{ ansible_os_family | lower }}.yml"
+
+  - name: Gather variables that apply to all operating systems
+    include_vars: common.yml
+
+  - name: Install iPXE dependencies
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items: "{{ ipxe_packages }}"
+
+  - name: Checkout latest iPXE sources
+    git:
+      repo: https://github.com/ipxe/ipxe.git
+      dest: /usr/src/ipxe
+      version: master
+
+  - name: Copy iPXE embedded script to iPXE source directory
+    template:
+       src: ipxe-embed.j2
+       dest: /usr/src/ipxe/src/ipxe-embed
+
+  - name: Touch iPXE config local files
+    file:
+      path: "{{ item }}"
+      state: touch
+    with_items:
+    - /usr/src/ipxe/src/config/local/console.h
+    - /usr/src/ipxe/src/config/local/umalloc.h
+    - /usr/src/ipxe/src/config/local/nap.h
+    - /usr/src/ipxe/src/config/local/timer.h
+    - /usr/src/ipxe/src/config/local/branding.h
+    - /usr/src/ipxe/src/config/local/serial.h
+    - /usr/src/ipxe/src/config/local/reboot.h
+    - /usr/src/ipxe/src/config/local/sanboot.h
+    - /usr/src/ipxe/src/config/local/fault.h
+    - /usr/src/ipxe/src/config/local/dhcp.h
+    - /usr/src/ipxe/src/config/local/sideband.h
+    - /usr/src/ipxe/src/config/local/entropy.h
+    - /usr/src/ipxe/src/config/local/crypto.h
+    - /usr/src/ipxe/src/config/local/usb.h
+    - /usr/src/ipxe/src/config/local/settings.h
+
+  - name: Compile iPXE
+    shell: "{{ item }}"
+    with_items:
+    - make EMBED=ipxe-embed
+    args:
+      chdir: /usr/src/ipxe/src
+
+  - name: Create iPXE file directory
+    file:
+      path: /var/www/html/ipxe
+      state: directory
+
+  - name: Copy iPXE files to http directory
+    copy:
+      src: /usr/src/ipxe/src/bin/{{ item }}
+      dest: /var/www/html/ipxe/
+      remote_src: True
+    with_items:
+    - ipxe.iso
+    - ipxe.lkrn
+    - ipxe.usb
+    - ipxe.dsk
+    - ipxe.pxe
