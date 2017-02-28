@@ -1,1 +1,11 @@
 ---
+
+  - name: restart dhcpd
+    service:
+      name: dhcpd
+      state: restarted
+    ignore_errors: true
+
+  - name: reload systemd
+    command: systemctl daemon-reload
+

@@ -1,0 +1,92 @@
+# Ecopoiesis DHCP Configuration, this server is managed by
+# Ecopoiesis, any changes here will be overwritten
+#
+# https://github.com/antonym/ecopoiesis
+
+ddns-update-style none;
+ddns-updates off;
+default-lease-time 600;
+max-lease-time 600;
+always-broadcast on;
+authoritative;
+one-lease-per-client true;
+
+option arch                             code 93 = unsigned integer 16;
+option conf-file                        code 209 = text;
+
+option space ipxe;
+option ipxe-encap-opts                  code 175 = encapsulate ipxe;
+option ipxe.priority                    code 1 = signed integer 8;
+option ipxe.keep-san                    code 8 = unsigned integer 8;
+option ipxe.skip-san-boot               code 9 = unsigned integer 8;
+option ipxe.syslogs                     code 85 = string;
+option ipxe.cert                        code 91 = string;
+option ipxe.privkey                     code 92 = string;
+option ipxe.crosscert                   code 93 = string;
+option ipxe.no-pxedhcp                  code 176 = unsigned integer 8;
+option ipxe.bus-id                      code 177 = string;
+option ipxe.bios-drive                  code 189 = unsigned integer 8;
+option ipxe.username                    code 190 = string;
+option ipxe.password                    code 191 = string;
+option ipxe.reverse-username            code 192 = string;
+option ipxe.reverse-password            code 193 = string;
+option ipxe.version                     code 235 = string;
+option iscsi-initiator-iqn              code 203 = string;
+# Feature indicators
+option ipxe.pxeext                      code 16 = unsigned integer 8;
+option ipxe.iscsi                       code 17 = unsigned integer 8;
+option ipxe.aoe                         code 18 = unsigned integer 8;
+option ipxe.http                        code 19 = unsigned integer 8;
+option ipxe.https                       code 20 = unsigned integer 8;
+option ipxe.tftp                        code 21 = unsigned integer 8;
+option ipxe.ftp                         code 22 = unsigned integer 8;
+option ipxe.dns                         code 23 = unsigned integer 8;
+option ipxe.bzimage                     code 24 = unsigned integer 8;
+option ipxe.multiboot                   code 25 = unsigned integer 8;
+option ipxe.slam                        code 26 = unsigned integer 8;
+option ipxe.srp                         code 27 = unsigned integer 8;
+option ipxe.nbi                         code 32 = unsigned integer 8;
+option ipxe.pxe                         code 33 = unsigned integer 8;
+option ipxe.elf                         code 34 = unsigned integer 8;
+option ipxe.comboot                     code 35 = unsigned integer 8;
+option ipxe.efi                         code 36 = unsigned integer 8;
+option ipxe.fcoe                        code 37 = unsigned integer 8;
+option ipxe.vlan                        code 38 = unsigned integer 8;
+option ipxe.menu                        code 39 = unsigned integer 8;
+option ipxe.sdi                         code 40 = unsigned integer 8;
+option ipxe.nfs                         code 41 = unsigned integer 8;
+
+# Put a subnet here so that DHCP will fire up on the public network
+subnet {{ ecopoiesis_public_net }} netmask {{ ecopoiesis_public_nm }} {
+}
+
+# Put a subnet here so that DHCP will fire up on the servicenet network
+subnet {{ ecopoiesis_snet_net }} netmask {{ ecopoiesis_snet_nm }} {
+}
+
+{% for network in dhcp_ranges %}
+# {{ network.comment|default(network.mgmt_domain) }}
+subnet {{ network.mgmt_network }} netmask {{ network.mgmt_netmask }} {
+	range {{ network.dhcp_start }} {{ network.dhcp_end }};
+        # for powervm -- range dynamic-bootp network.bootp_start network.bootp_end;
+	next-server {{ dhcp_next_server }};
+	option subnet-mask {{ network.mgmt_netmask }};
+	option routers {{ network.mgmt_gateway }};
+	option broadcast-address {{ network.mgmt_broadcast }};
+	option domain-name "{{ network.mgmt_domain }}";
+	option domain-name-servers {{ mgmt_dns }};
+        if exists user-class and option user-class = "iPXE" {
+            filename "{{ deploy_webserver_url }}/ecopoiesis.ipxe";
+        } elsif option arch = 00:0e {
+            # OpenPower Petitboot, skip iPXE
+        } else {
+            filename "undionly.kpxe";
+        }
+
+        if option arch = 00:0e {
+            # OpenPower Petitboot, skip iPXE
+        } else {
+            filename "undionly.kpxe";
+        }
+}
+{% endfor %}
