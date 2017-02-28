@@ -50,7 +50,7 @@
     - /usr/src/ipxe/src/config/local/settings.h
 
   - name: Compile iPXE disks
-    shell: "make EMBED=ipxe-embed {{ item }}"
+    shell: "make bin/{{ item }} EMBED=ipxe-embed"
     with_items:
     - ipxe.iso
     - ipxe.lkrn
