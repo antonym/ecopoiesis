@@ -56,11 +56,11 @@ option ipxe.menu                        code 39 = unsigned integer 8;
 option ipxe.sdi                         code 40 = unsigned integer 8;
 option ipxe.nfs                         code 41 = unsigned integer 8;
 
-# Put a subnet here so that DHCP will fire up on the public network
-subnet {{ ecopoiesis_primary_net }} netmask {{ ecopoiesis_public_nm }} {
+# Put a subnet here so that DHCP will fire up on the primary network
+subnet {{ ecopoiesis_primary_net }} netmask {{ ecopoiesis_primary_nm }} {
 }
 
-# Put a subnet here so that DHCP will fire up on the servicenet network
+# Put a subnet here so that DHCP will fire up on the secondary network
 subnet {{ ecopoiesis_secondary_net }} netmask {{ ecopoiesis_secondary_nm }} {
 }
 
