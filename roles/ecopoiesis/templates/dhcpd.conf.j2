@@ -57,7 +57,7 @@ option ipxe.sdi                         code 40 = unsigned integer 8;
 option ipxe.nfs                         code 41 = unsigned integer 8;
 
 # Put a subnet here so that DHCP will fire up on the public network
-subnet {{ ecopoiesis_public_net }} netmask {{ ecopoiesis_public_nm }} {
+subnet {{ ecopoiesis_primary_net }} netmask {{ ecopoiesis_public_nm }} {
 }
 
 # Put a subnet here so that DHCP will fire up on the servicenet network
