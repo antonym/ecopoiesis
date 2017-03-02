@@ -1,0 +1,185 @@
+#!ipxe
+
+set name ${mac:hexraw}
+set esc:hex 1b
+set count:int32 0
+set space:hex 20:20
+set space ${space:string}
+set lldp_retry_count:int32 0
+set plop_retry_count:int32 0
+set lldp_retry_limit 90
+set plop_retry_limit 10
+set primary_dns 8.8.8.8
+set ecopoiesis_host {{ ecopoiesis_host }}
+set ecopoiesis_boot_profile rax_cloud
+##set version_url http://${ecopoiesis_host}/miniplop/versions/ipxe
+##set inventory_url http://${ecopoiesis_host}/tbd
+:start
+echo Ecopoiesis - Node: ${ecopoiesis_host}
+:menu_prompt
+prompt --key m --timeout 4000 Hit the m key to open Ecopoiesis Menu... && goto ecopoiesis_menu || goto discover
+
+:ecopoiesis_menu
+menu Ecopoiesis - Node: ${ecopoiesis_host}
+item lldp_discover ${space} Discover Server using LLDP (Default)
+item server_id ${space} Discover Server using Server Identifer
+item mac_address ${space} Discover Server using MAC Address
+item manual_override ${space} Manual Override
+item netboot_xyz ${space} Chain into netboot.xyz
+item shell ${space} Debug Shell
+isset ${menu} && set timeout 0 || set timeout 60000
+choose --timeout ${timeout} --default ${menu} menu || goto start
+echo ${cls}
+goto ${menu} ||
+goto start
+
+:discover
+isset ${inventory_server_number} && goto server_number_discover || goto lldp_discover
+goto start
+
+:server_id
+echo -n Server ID: && read inventory_server_number || goto ecopoiesis_menu
+goto server_number_discover
+:server_number_discover
+echo -- Discovering Server Using Inventory Server Number...
+##set server_info miniplop/pxe?number=${inventory_server_number}&cache=no
+goto plop
+
+:lldp_discover
+echo -- Discovering Server Attributes using LLDP...
+:retry_poll_lldp
+inc lldp_retry_count
+iseq ${lldp_retry_count} ${lldp_retry_limit} && echo Retry limit hit... unable to discover with LLDP... looking up via MAC address... && goto mac_address ||
+sleep 1
+isset ${netX.lldp/lldpsource} || goto retry_poll_lldp
+isset ${netX.lldp/systemname} || goto retry_poll_lldp
+isset ${netX.lldp/portid} || goto retry_poll_lldp
+echo LLDP packet received...
+echo
+echo Switch Name.....${netX.lldp/systemname}
+echo Port Number.....${netX.lldp/portid}
+echo
+##set server_info miniplop/pxe?switch_name=${netX.lldp/systemname}&switch_port=${netX.lldp/portid}&cache=no
+goto plop
+
+:mac_address
+echo -- Discovering Server Using MAC Address...
+#adjustme#set server_info ${inventory_url}/pxe?mac=${mac:hexhyp}&cache=no
+goto plop
+
+:manual_override
+echo Manual Input Requested:
+echo -n Specify IP Type ( static or dhcp ): && read mgmt_ip_type
+iseq ${mgmt_ip_type} dhcp && goto manual_input_dhcp || goto manual_input_static
+:manual_input_dhcp
+set mgmt_ip_address ${netX/ip}
+set mgmt_netmask ${netX/netmask}
+set mgmt_gateway_ip ${netX/gateway}
+set primary_dns ${primary_dns}
+goto manual_input_settings
+:manual_input_static
+echo -n IP: && read mgmt_ip_address
+echo -n Netmask: && read mgmt_netmask
+echo -n Gateway: && read mgmt_gateway_ip
+echo -n DNS: && read primary_dns
+:manual_input_settings
+echo -n Server Number: && read srv_num
+echo -n Ecopoiesis_Boot_OS Name (ubuntu_xenial): && read ecopoiesis_boot_os
+echo -n Ecopoiesis_Boot_OS_Version Name: && read ecopoiesis_boot_os_version
+echo -n Ecopoiesis_Boot_Status Name (provision): && read ecopoiesis_boot_status
+echo -n Ecopoiesis_Boot_Profile: && read ecopoiesis_boot_profile
+set name ${srv_num}
+goto set_hostname
+
+:netboot_xyz
+chain --autofree http://boot.netboot.xyz
+goto start
+
+:plop
+echo ${bold}Retrieving server boot configuration from plop...${boldoff}
+chain --autofree http://${ecopoiesis_host}/${server_info} || goto plop_retry
+goto set_hostname
+
+:plop_retry
+sleep 10
+inc plop_retry_count
+iseq ${plop_retry_count} ${plop_retry_limit} && echo Retry limit hit... assuming Miniplop is unavailable... && goto localboot ||
+echo ${bold}Retrying request... (Attempt ${plop_retry_count})...${boldoff}
+chain --autofree http://${ecopoiesis_host}/${server_info} || goto plop_retry
+goto set_hostname
+
+#:set_hostname
+#set hostname ${server_hostname}.${cell}.${region}.${domain}
+#set dns ${primary_dns}
+#goto hardware_check
+
+:hardware_check
+echo Retrieving server specific details...
+chain --autofree http://${ecopoiesis_host}/hwdetect.ipxe
+goto get_latest_version
+
+:get_latest_version
+##iseq ${ecopoiesis_boot_os} kvm-centos && chain --autofree ${version_url}/squashible-kvm-centos7 ||
+##iseq ${ecopoiesis_boot_os} utility && chain --autofree ${version_url}/squashible-util ||
+goto post_plop
+
+:post_plop
+echo
+echo Server variables retrieved from inventory are:
+echo
+echo Make.................${smbios/1.4.0}
+echo Model................${smbios/1.5.0}
+echo BIOS.................${smbios/0.5.0}
+echo MGMT Device..........${mgmt_device}
+echo MAC..................${netX/mac}
+echo Server Number........${srv_num}
+echo IP Address...........${mgmt_ip_address}
+echo Netmask..............${mgmt_netmask}
+echo Gateway..............${mgmt_gateway_ip}
+echo Primary DNS..........${primary_dns}
+echo Secondary DNS........${secondary_dns}
+echo Hostname.............${hostname}
+echo Region...............${region}
+echo DC...................${datacenter}
+echo latest_version.......${latest_version}
+echo boot_os..............${ecopoiesis_boot_os}
+echo boot_os_version......${ecopoiesis_boot_os_version}
+echo boot_profile.........${ecopoiesis_boot_profile}
+echo boot_status..........${ecopoiesis_boot_status}
+echo operational_status...${ecopoiesis_operational_status}
+goto validate
+
+:validate
+iseq ${ecopoiesis_boot_os} None && echo Not managed by Ecopoiesis, booting locally... && goto localboot ||
+iseq ${ecopoiesis_boot_status} None && echo Not managed by Ecopoiesis, booting locally... && goto localboot ||
+iseq ${ecopoiesis_operational_status} production && iseq ${ecopoiesis_boot_status} netboot && goto boot ||
+iseq ${ecopoiesis_operational_status} production && goto localboot ||
+iseq ${ecopoiesis_boot_status} production && goto localboot ||
+iseq ${ecopoiesis_boot_status} oob_config && goto utility ||
+iseq ${ecopoiesis_boot_status} debug_util && goto utility ||
+iseq ${ecopoiesis_boot_status} firmware && goto utility ||
+iseq ${ecopoiesis_boot_status} provision && goto utility ||
+iseq ${ecopoiesis_boot_status} provision_wisp && goto utility ||
+iseq ${ecopoiesis_boot_status} configure_raid && goto utility ||
+iseq ${ecopoiesis_boot_status} headshot && goto utility ||
+goto boot
+
+:boot
+echo Booting server...
+imgfree
+chain --autofree --replace http://${ecopoiesis_host}/configs/${ecopoiesis_boot_os}.ipxe || goto localboot
+goto start
+
+:utility
+imgfree
+chain --autofree --replace http://${ecopoiesis_host}/configs/utility.ipxe || goto localboot
+goto start
+
+:localboot
+echo Booting locally...
+exit
+
+:shell
+echo Type "exit" to return to menu
+shell
+goto start
