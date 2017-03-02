@@ -4,6 +4,15 @@
     name: "{{ ecopoiesis_distro_packages }}"
     state: latest
 
+- name: Create Ecopoiesis directories
+  file:
+    path: "{{ ecopoiesis_root_dir }}/{{ item }}"
+    state: directory
+  with_items:
+    - configs
+    - ipxe
+    - EFI
+
 - name: Setup motd
   template:
     src: motd
@@ -18,4 +27,4 @@
 - name: Install Ecopoiesis iPXE Loader
   template:
     src: ecopoiesis.ipxe.j2
-    dest: "{{ ecopoiesis_root_dir }}"
+    dest: "{{ ecopoiesis_root_dir }}/ecopoiesis.ipxe"
