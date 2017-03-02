@@ -83,7 +83,7 @@
 
   - name: Copy EFI iPXE to directory
     copy:
-      src: /usr/src/ipxe/src/bin/{{ item }}
+      src: /usr/src/ipxe/src/bin-x86_64-efi/{{ item }}
       dest: /var/www/html/EFI/x86/
       remote_src: True
     with_items:
