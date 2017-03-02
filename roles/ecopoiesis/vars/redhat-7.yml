@@ -12,3 +12,11 @@ ecopoiesis_distro_packages:
   - tftp-server
   - tmux
   - vim
+ipxe_packages:
+  - gcc
+  - genisoimage
+  - git
+  - httpd
+  - minizip-devel
+  - syslinux
+  - xz-devel

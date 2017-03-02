@@ -1,0 +1,21 @@
+---
+- name: Install distro packages
+  package:
+    name: "{{ ecopoiesis_distro_packages }}"
+    state: latest
+
+- name: Setup motd
+  template:
+    src: motd
+    dest: /etc/motd
+
+- name: Install DHCP Server Template
+  template:
+    src: dhcpd.conf.j2
+    dest: /etc/dhcp/dhcpd.conf
+  notify: restart dhcp service
+
+- name: Install Ecopoiesis iPXE Loader
+  template:
+    src: ecopoiesis.ipxe.j2
+    dest: "{{ ecopoiesis_root_dir }}"

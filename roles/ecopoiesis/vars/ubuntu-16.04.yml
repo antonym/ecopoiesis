@@ -13,3 +13,9 @@ ecopoiesis_distro_packages:
   - tftpd-hpa
   - tmux
   - vim
+ipxe_packages:
+  - gcc
+  - genisoimage
+  - git
+  - liblzma-dev
+  - syslinux
