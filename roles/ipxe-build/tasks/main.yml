@@ -52,12 +52,13 @@
   - name: Compile iPXE disks
     shell: "make bin/{{ item }} EMBED=ipxe-embed"
     with_items:
-    - ipxe.iso
-    - ipxe.lkrn
-    - ipxe.usb
-    - ipxe.dsk
-    - ipxe.pxe
-    - undionly.kpxe
+    - bin/ipxe.iso
+    - bin/ipxe.lkrn
+    - bin/ipxe.usb
+    - bin/ipxe.dsk
+    - bin/ipxe.pxe
+    - bin/undionly.kpxe
+    - bin-x86_64-efi/ipxe.efi
     args:
       chdir: /usr/src/ipxe/src
   
@@ -79,3 +80,11 @@
     - ipxe.dsk
     - ipxe.pxe
     - undionly.kpxe
+
+  - name: Copy EFI iPXE to directory
+    copy:
+      src: /usr/src/ipxe/src/bin/{{ item }}
+      dest: /var/www/html/EFI/x86/
+      remote_src: True
+    with_items:
+    - ipxe.efi
