@@ -15,5 +15,5 @@
   tags:
     - always
 
-- include ecopoiesis.yml
-- include ipxe-build.yml
+- include: ecopoiesis.yml
+- include: ipxe-build.yml
