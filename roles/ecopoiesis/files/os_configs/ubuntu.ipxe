@@ -1,0 +1,34 @@
+#!ipxe
+# Ubuntu Generic Installer
+
+:validate_os
+iseq ${ecopoiesis_boot_os_version} trusty && goto validate_status ||
+iseq ${ecopoiesis_boot_os_version} xenial && goto validate_status ||
+goto reload_ecopoiesis
+
+:validate_status
+iseq ${ecopoiesis_operational_status} production && goto localboot ||
+iseq ${ecopoiesis_boot_status} install_os && goto install_os ||
+iseq ${ecopoiesis_operational_status} provisioning && goto localboot ||
+iseq ${ecopoiesis_boot_status} localboot && goto localboot ||
+goto reload_ecopoiesis
+
+:reload_ecopoiesis
+chain --autofree --replace http://${ecopoiesis_host}/ecopoiesis.ipxe
+exit
+
+:localboot
+echo Booting locally...
+sanboot --no-describe --drive 0x80 ||
+exit
+goto validate_os
+
+:install_os
+set mirror mirror.rackspace.com
+set mirrorcfg mirror/suite=${ecopoiesis_boot_os_version} mirror/country=manual mirror/http/hostname=${mirror} mirror/http/directory=/ubuntu/
+set netcfg netcfg/get_ipaddress=${netX/ip} netcfg/get_netmask=${netX/netmask} netcfg/get_gateway=${netX/gateway} netcfg/get_nameservers=${dns} netcfg/confirm_static=true netcfg/choose_interface=eth0 netcfg/disable_autoconfig=true
+set dir ubuntu/dists/${ecopoiesis_boot_os_version}-updates/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64
+kernel http://${mirror}/${dir}/linux ${netcfg} ${mirrorcfg} auto=true priority=critical preseed/url=http://${ecopoiesis_host}/miniplop/pxe/configs/${ecopoiesis_boot_profile}?number=${srv_num}
+initrd http://${mirror}/${dir}/initrd.gz
+boot
+goto validate_os
