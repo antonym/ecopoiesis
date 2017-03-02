@@ -31,3 +31,8 @@
     dest: /etc/dhcp/dhcpd.conf
   notify: restart dhcp service
 
+- name: Install Ecopoiesis iPXE Loader
+  template:
+    src: ecopoiesis.ipxe.j2
+    dest: /var/www/html/ecopoiesis.ipxe
+
