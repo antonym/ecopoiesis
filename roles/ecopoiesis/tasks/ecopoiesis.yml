@@ -11,7 +11,7 @@
   with_items:
     - configs
     - ipxe
-    - EFI
+    - EFI/x86
 
 - name: Setup motd
   template:
