@@ -32,5 +32,5 @@
 - name: Install os_configs
   copy:
     src: os_configs/
-    dest: "{{ ecopoiesis_root_dir }}/configs/
+    dest: "{{ ecopoiesis_root_dir }}/configs/"
     mode: 0444
