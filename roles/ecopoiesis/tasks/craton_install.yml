@@ -6,3 +6,14 @@
     dest: "{{ craton_root_dir }}"
     version: master
     force: true
+
+- name: Build craton docker image
+  docker_image:
+    path: "{{ craton_root_dir }}"
+    name: craton_api:latest
+
+- name: Start craton docker image
+  docker_container:
+    name: craton_api
+    state: present
+    image: craton_api:latest
