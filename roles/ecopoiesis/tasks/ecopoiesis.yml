@@ -38,7 +38,7 @@
 - name: Checkout plip
   git:
     repo: https://github.com/antonym/plip.git
-    dest: {{ plip_root_dir }}
+    dest: "{{ plip_root_dir }}"
     version: master
 
 - name: Install plip config file
