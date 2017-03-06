@@ -2,3 +2,8 @@
 
 ecopoiesis_root_dir: /opt/ecopoiesis 
 plip_root_dir: /opt/plip
+
+craton_url: 'http://{{ ecopoiesis_host }}:7780/v1'
+craton_username: 'set_craton_username'
+craton_password: 'set_craton_password'
+craton_project_id: 'set_craton_project_id'
