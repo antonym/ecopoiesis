@@ -1,0 +1,7 @@
+---
+
+- name: Checkout craton
+  git:
+    repo: https://github.com/openstack/craton.git
+    dest: "{{ craton_root_dir }}"
+    version: master
