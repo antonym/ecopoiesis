@@ -12,7 +12,8 @@ ecopoiesis_distro_packages:
   - tftp-server
   - tmux
   - vim
-ipxe_packages:
+
+ipxe_distro_packages:
   - gcc
   - genisoimage
   - git

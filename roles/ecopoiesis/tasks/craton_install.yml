@@ -10,10 +10,11 @@
 - name: Build craton docker image
   docker_image:
     path: "{{ craton_root_dir }}"
-    name: craton_api:latest
+    name: craton_api
+    tag: latest
 
 - name: Start craton docker image
   docker_container:
     name: craton_api
-    state: present
+    state: started
     image: craton_api:latest

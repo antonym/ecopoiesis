@@ -13,7 +13,11 @@ ecopoiesis_distro_packages:
   - tftpd-hpa
   - tmux
   - vim
-ipxe_packages:
+
+ecopoiesis_pip_packages:
+  - docker-py
+
+ipxe_distro_packages:
   - gcc
   - genisoimage
   - git

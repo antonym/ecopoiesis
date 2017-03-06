@@ -4,6 +4,11 @@
     name: "{{ ecopoiesis_distro_packages }}"
     state: latest
 
+- name: Install pip packages
+  pip:
+    name: "{{ ecopoiesis_pip_packages }}"
+    state: latest
+
 - name: Create Ecopoiesis directories
   file:
     path: "{{ ecopoiesis_root_dir }}/{{ item }}"
