@@ -10,6 +10,7 @@
     repo: https://github.com/ipxe/ipxe.git
     dest: /usr/src/ipxe
     version: master
+    force: yes
 
 - name: Copy iPXE embedded script to iPXE source directory
   template:
