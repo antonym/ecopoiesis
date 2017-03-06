@@ -14,7 +14,7 @@
     tag: latest
 
 - name: Start craton docker image
-  docker_container:
+  docker:
     name: craton_api
     state: started
     image: craton_api:latest

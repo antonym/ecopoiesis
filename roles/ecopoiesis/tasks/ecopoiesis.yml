@@ -6,8 +6,10 @@
 
 - name: Install pip packages
   pip:
-    name: "{{ ecopoiesis_pip_packages }}"
+    name: "{{ item }}"
     state: latest
+  with_items:
+    - "{{ ecopoiesis_pip_packages }}" 
 
 - name: Create Ecopoiesis directories
   file:
