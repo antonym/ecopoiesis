@@ -16,5 +16,5 @@
     - always
 
 - include: ecopoiesis.yml
-- include: craton_build.yml
+- include: craton_install.yml
 - include: ipxe_build.yml
