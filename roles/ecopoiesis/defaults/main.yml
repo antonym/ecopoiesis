@@ -1,3 +1,4 @@
 ---
 
 ecopoiesis_root_dir: /opt/ecopoiesis 
+plip_root_dir: /opt/plip

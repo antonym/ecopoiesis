@@ -1,78 +1,78 @@
 ---
-  - name: Install iPXE dependencies
-    package:
-      name: "{{ item }}"
-      state: latest
-    with_items: "{{ ipxe_packages }}"
+- name: Install iPXE dependencies
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ ipxe_packages }}"
 
-  - name: Checkout latest iPXE sources
-    git:
-      repo: https://github.com/ipxe/ipxe.git
-      dest: /usr/src/ipxe
-      version: master
+- name: Checkout latest iPXE sources
+  git:
+    repo: https://github.com/ipxe/ipxe.git
+    dest: /usr/src/ipxe
+    version: master
 
-  - name: Copy iPXE embedded script to iPXE source directory
-    template:
-       src: ipxe-embed.j2
-       dest: /usr/src/ipxe/src/ipxe-embed
+- name: Copy iPXE embedded script to iPXE source directory
+  template:
+     src: ipxe-embed.j2
+     dest: /usr/src/ipxe/src/ipxe-embed
 
-  - name: Touch iPXE config local files
-    file:
-      path: "{{ item }}"
-      state: touch
-    with_items:
-    - /usr/src/ipxe/src/config/local/console.h
-    - /usr/src/ipxe/src/config/local/umalloc.h
-    - /usr/src/ipxe/src/config/local/nap.h
-    - /usr/src/ipxe/src/config/local/timer.h
-    - /usr/src/ipxe/src/config/local/branding.h
-    - /usr/src/ipxe/src/config/local/serial.h
-    - /usr/src/ipxe/src/config/local/reboot.h
-    - /usr/src/ipxe/src/config/local/sanboot.h
-    - /usr/src/ipxe/src/config/local/fault.h
-    - /usr/src/ipxe/src/config/local/dhcp.h
-    - /usr/src/ipxe/src/config/local/sideband.h
-    - /usr/src/ipxe/src/config/local/entropy.h
-    - /usr/src/ipxe/src/config/local/crypto.h
-    - /usr/src/ipxe/src/config/local/usb.h
-    - /usr/src/ipxe/src/config/local/settings.h
+- name: Touch iPXE config local files
+  file:
+    path: "{{ item }}"
+    state: touch
+  with_items:
+  - /usr/src/ipxe/src/config/local/console.h
+  - /usr/src/ipxe/src/config/local/umalloc.h
+  - /usr/src/ipxe/src/config/local/nap.h
+  - /usr/src/ipxe/src/config/local/timer.h
+  - /usr/src/ipxe/src/config/local/branding.h
+  - /usr/src/ipxe/src/config/local/serial.h
+  - /usr/src/ipxe/src/config/local/reboot.h
+  - /usr/src/ipxe/src/config/local/sanboot.h
+  - /usr/src/ipxe/src/config/local/fault.h
+  - /usr/src/ipxe/src/config/local/dhcp.h
+  - /usr/src/ipxe/src/config/local/sideband.h
+  - /usr/src/ipxe/src/config/local/entropy.h
+  - /usr/src/ipxe/src/config/local/crypto.h
+  - /usr/src/ipxe/src/config/local/usb.h
+  - /usr/src/ipxe/src/config/local/settings.h
 
-  - name: Compile iPXE disks
-    shell: "make {{ item }} EMBED=ipxe-embed"
-    with_items:
-    - bin/ipxe.iso
-    - bin/ipxe.lkrn
-    - bin/ipxe.usb
-    - bin/ipxe.dsk
-    - bin/ipxe.pxe
-    - bin/undionly.kpxe
-    - bin-x86_64-efi/ipxe.efi
-    args:
-      chdir: /usr/src/ipxe/src
+- name: Compile iPXE disks
+  shell: "make {{ item }} EMBED=ipxe-embed"
+  with_items:
+  - bin/ipxe.iso
+  - bin/ipxe.lkrn
+  - bin/ipxe.usb
+  - bin/ipxe.dsk
+  - bin/ipxe.pxe
+  - bin/undionly.kpxe
+  - bin-x86_64-efi/ipxe.efi
+  args:
+    chdir: /usr/src/ipxe/src
 
 
-  - name: Create iPXE file directory
-    file:
-      path: /var/www/html/ipxe
-      state: directory
+- name: Create iPXE file directory
+  file:
+    path: /var/www/html/ipxe
+    state: directory
 
-  - name: Copy iPXE files to http directory
-    copy:
-      src: /usr/src/ipxe/src/bin/{{ item }}
-      dest: "{{ ecopoiesis_root_dir }}/ipxe/"
-      remote_src: True
-    with_items:
-    - ipxe.iso
-    - ipxe.lkrn
-    - ipxe.usb
-    - ipxe.dsk
-    - ipxe.pxe
-    - undionly.kpxe
+- name: Copy iPXE files to http directory
+  copy:
+    src: /usr/src/ipxe/src/bin/{{ item }}
+    dest: "{{ ecopoiesis_root_dir }}/ipxe/"
+    remote_src: True
+  with_items:
+  - ipxe.iso
+  - ipxe.lkrn
+  - ipxe.usb
+  - ipxe.dsk
+  - ipxe.pxe
+  - undionly.kpxe
 
-  - name: Copy EFI iPXE to directory
-    copy:
-      src: /usr/src/ipxe/src/bin-x86_64-efi/{{ item }}
-      dest: "{{ ecopoiesis_root_dir }}/EFI/x86/"
-      remote_src: True
-    with_items:
-    - ipxe.efi
+- name: Copy EFI iPXE to directory
+  copy:
+    src: /usr/src/ipxe/src/bin-x86_64-efi/{{ item }}
+    dest: "{{ ecopoiesis_root_dir }}/EFI/x86/"
+    remote_src: True
+  with_items:
+  - ipxe.efi
