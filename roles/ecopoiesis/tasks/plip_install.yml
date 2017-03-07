@@ -1,0 +1,30 @@
+---
+
+- name: Checkout plip
+  git:
+    repo: https://github.com/antonym/plip.git
+    dest: "{{ plip_root_dir }}"
+    version: master
+    force: yes
+
+- name: Install plip config file
+  template:
+    src: plip_config.py.j2
+    dest: "{{ plip_root_dir }}/config.py"
+
+- name: Create plip group
+  group:
+    name: plip
+    state: present
+
+- name: Create plip user
+  user:
+    name: plip
+    group: plip
+
+- name: Setup plip permissions
+  file:
+    path: /opt/plip
+    owner: plip
+    group: plip
+    mode: 0777

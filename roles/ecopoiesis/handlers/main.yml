@@ -9,3 +9,8 @@
   - name: reload systemd
     command: systemctl daemon-reload
 
+  - name: restart tftpd-hpa service
+    service:
+      name: "{{ tftpd_service }}"
+      state: restarted
+    ignore_errors: true

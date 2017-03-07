@@ -1,5 +1,6 @@
 ---
 dhcp_service: dhcpd
+tftpd_service: xinetd
 ecopoiesis_distro_packages:
   - dhcp
   - git

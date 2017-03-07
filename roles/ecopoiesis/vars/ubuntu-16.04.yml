@@ -1,7 +1,9 @@
 ---
 dhcp_service: isc-dhcp-server
+tftpd_service: tftpd-hpa
 ecopoiesis_distro_packages:
   - ansible
+  - apache2
   - build-essential
   - git
   - isc-dhcp-server

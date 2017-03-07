@@ -42,14 +42,9 @@
     dest: "{{ ecopoiesis_root_dir }}/configs/"
     mode: 0444
 
-- name: Checkout plip
-  git:
-    repo: https://github.com/antonym/plip.git
-    dest: "{{ plip_root_dir }}"
-    version: master
-    force: yes
+- name: Install tftpd-hpa.conf
+  copy:
+    src: tftpd-hpa.com
+    dest: /etc/default/tftpd-hpa.conf
+  notify: restart tftpd-hpa service
 
-- name: Install plip config file
-  template:
-    src: plip_config.py.j2
-    dest: "{{ plip_root_dir }}/config.py"
