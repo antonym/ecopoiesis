@@ -4,7 +4,7 @@ set ecopoiesis_host {{ dhcp_next_server }}
 
 :start
 set ecopoiesis_loader_version 1
-echo ${tf_host} iPXE loader version 1
+echo ${ecopoiesis_host} iPXE loader version 1
 prompt --key m --timeout 4000 Hit the ${bold}m${boldoff} key to open failsafe menu... && goto failsafe || goto dhcp
 
 :dhcp
