@@ -79,10 +79,10 @@ subnet {{ network.mgmt_network }} netmask {{ network.mgmt_netmask }} {
             filename "http://{{ ecopoiesis_host }}/ecopoiesis.ipxe";
         } elsif option arch = 00:0e {
             # OpenPower Petitboot, skip iPXE
-        } elsif option arch == 00:07 or option arch == 00:09 {
+        } elsif option arch = 00:07 or option arch = 00:09 {
             filename "/EFI/x86/bootx64.efi";
         } else {
-            filename "undionly.kpxe";
+            filename "/ipxe/undionly.kpxe";
         }
 }
 {% endfor %}

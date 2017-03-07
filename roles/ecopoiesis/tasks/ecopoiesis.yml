@@ -45,6 +45,6 @@
 - name: Install tftpd-hpa.conf
   copy:
     src: tftpd-hpa.conf
-    dest: /etc/default/tftpd-hpa.conf
+    dest: /etc/default/tftpd-hpa
   notify: restart tftpd-hpa service
 
