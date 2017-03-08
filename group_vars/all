@@ -1,5 +1,5 @@
 ---
-  ecopoiesis_host: deploy-server.mycloud.com
+  ecopoiesis_host: 172.16.120.10
   ecopoiesis_ip: 192.168.100.20
   ecopoiesis_secondary_host: secondary.deploy-server.mycloud.com
   ecopoiesis_secondary_ip: 172.16.120.0
