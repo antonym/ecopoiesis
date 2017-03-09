@@ -59,12 +59,12 @@ echo
 echo Switch Name.....${netX.lldp/systemname}
 echo Port Number.....${netX.lldp/portid}
 echo
-##set server_info plip/pxe?switch_name=${netX.lldp/systemname}&switch_port=${netX.lldp/portid}&cache=no
+set server_info plip/pxe?switch_name=${netX.lldp/systemname}&switch_port=${netX.lldp/portid}
 goto plip
 
 :mac_address
 echo -- Discovering Server Using MAC Address...
-#adjustme#set server_info ${inventory_url}/pxe?mac=${mac:hexhyp}&cache=no
+set server_info plip/pxe?mac=${mac:hexhyp}
 goto plip
 
 :manual_override
@@ -103,24 +103,31 @@ goto set_hostname
 :plip_retry
 sleep 10
 inc plip_retry_count
-iseq ${plip_retry_count} ${plip_retry_limit} && echo Retry limit hit... assuming plip is unavailable... && goto localboot ||
+iseq ${plip_retry_count} ${plip_retry_limit} && echo Retry limit hit... attempting discovery... && goto discover_server ||
 echo ${bold}Retrying request... (Attempt ${plip_retry_count})...${boldoff}
 chain --autofree http://${ecopoiesis_host}/${server_info} || goto plip_retry
-goto set_hostname
+goto post_plip
 
 #:set_hostname
 #set hostname ${server_hostname}.${cell}.${region}.${domain}
 #set dns ${primary_dns}
 #goto hardware_check
 
-:hardware_check
-echo Retrieving server specific details...
-chain --autofree http://${ecopoiesis_host}/hwdetect.ipxe
-goto get_latest_version
+#:hardware_check
+#echo Retrieving server specific details...
+#chain --autofree http://${ecopoiesis_host}/hwdetect.ipxe
+#goto get_latest_version
 
 :get_latest_version
 ##iseq ${ecopoiesis_boot_os} kvm-centos && chain --autofree ${version_url}/squashible-kvm-centos7 ||
 ##iseq ${ecopoiesis_boot_os} utility && chain --autofree ${version_url}/squashible-util ||
+goto post_plip
+
+:discover_server
+echo Discovering Server...
+set ecopoiesis_boot_os utility
+set ecopoiesis_boot_status discover
+set ecopoiesis_boot_profile discover
 goto post_plip
 
 :post_plip
@@ -162,6 +169,7 @@ iseq ${ecopoiesis_boot_status} provision && goto utility ||
 iseq ${ecopoiesis_boot_status} provision_wisp && goto utility ||
 iseq ${ecopoiesis_boot_status} configure_raid && goto utility ||
 iseq ${ecopoiesis_boot_status} headshot && goto utility ||
+iseq ${ecopoiesis_boot_status} discover && goto utility ||
 goto boot
 
 :boot
