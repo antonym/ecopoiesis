@@ -76,4 +76,4 @@
 - name: Retrieve ubuntu minimal live rootfs
   get_url:
     url: http://images.squashible.com/images/squashible-ubuntu-16.04-minimal/rootfs.img
-    dest: "{{ ecopoiesis_root_dir }}/opt/ecopoiesis/images/squashible-ubuntu-16.04-minimal/rootfs.img"
+    dest: "{{ ecopoiesis_root_dir }}/images/squashible-ubuntu-16.04-minimal/rootfs.img"
