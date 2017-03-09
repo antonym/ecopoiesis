@@ -48,3 +48,8 @@
     dest: /etc/default/tftpd-hpa
   notify: restart tftpd-hpa service
 
+- name: Install httpd miniplop config
+  copy:
+    src: plip.conf
+    dest: /etc/apache2/sites-enabled/plip.conf
+
