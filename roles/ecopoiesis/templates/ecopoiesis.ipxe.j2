@@ -6,13 +6,13 @@ set count:int32 0
 set space:hex 20:20
 set space ${space:string}
 set lldp_retry_count:int32 0
-set plop_retry_count:int32 0
+set plip_retry_count:int32 0
 set lldp_retry_limit 90
-set plop_retry_limit 10
+set plip_retry_limit 10
 set primary_dns 8.8.8.8
 set ecopoiesis_host {{ ecopoiesis_host }}
 set ecopoiesis_boot_profile rax_cloud
-##set version_url http://${ecopoiesis_host}/miniplop/versions/ipxe
+##set version_url http://${ecopoiesis_host}/plip/versions/ipxe
 ##set inventory_url http://${ecopoiesis_host}/tbd
 :start
 echo Ecopoiesis - Node: ${ecopoiesis_host}
@@ -42,8 +42,8 @@ echo -n Server ID: && read inventory_server_number || goto ecopoiesis_menu
 goto server_number_discover
 :server_number_discover
 echo -- Discovering Server Using Inventory Server Number...
-##set server_info miniplop/pxe?number=${inventory_server_number}&cache=no
-goto plop
+##set server_info plip/pxe?number=${inventory_server_number}&cache=no
+goto plip
 
 :lldp_discover
 echo -- Discovering Server Attributes using LLDP...
@@ -59,13 +59,13 @@ echo
 echo Switch Name.....${netX.lldp/systemname}
 echo Port Number.....${netX.lldp/portid}
 echo
-##set server_info miniplop/pxe?switch_name=${netX.lldp/systemname}&switch_port=${netX.lldp/portid}&cache=no
-goto plop
+##set server_info plip/pxe?switch_name=${netX.lldp/systemname}&switch_port=${netX.lldp/portid}&cache=no
+goto plip
 
 :mac_address
 echo -- Discovering Server Using MAC Address...
 #adjustme#set server_info ${inventory_url}/pxe?mac=${mac:hexhyp}&cache=no
-goto plop
+goto plip
 
 :manual_override
 echo Manual Input Requested:
@@ -95,17 +95,17 @@ goto set_hostname
 chain --autofree http://boot.netboot.xyz
 goto start
 
-:plop
-echo ${bold}Retrieving server boot configuration from plop...${boldoff}
-chain --autofree http://${ecopoiesis_host}/${server_info} || goto plop_retry
+:plip
+echo ${bold}Retrieving server boot configuration from plip...${boldoff}
+chain --autofree http://${ecopoiesis_host}/${server_info} || goto plip_retry
 goto set_hostname
 
-:plop_retry
+:plip_retry
 sleep 10
-inc plop_retry_count
-iseq ${plop_retry_count} ${plop_retry_limit} && echo Retry limit hit... assuming Miniplop is unavailable... && goto localboot ||
-echo ${bold}Retrying request... (Attempt ${plop_retry_count})...${boldoff}
-chain --autofree http://${ecopoiesis_host}/${server_info} || goto plop_retry
+inc plip_retry_count
+iseq ${plip_retry_count} ${plip_retry_limit} && echo Retry limit hit... assuming Miniplip is unavailable... && goto localboot ||
+echo ${bold}Retrying request... (Attempt ${plip_retry_count})...${boldoff}
+chain --autofree http://${ecopoiesis_host}/${server_info} || goto plip_retry
 goto set_hostname
 
 #:set_hostname
@@ -121,9 +121,9 @@ goto get_latest_version
 :get_latest_version
 ##iseq ${ecopoiesis_boot_os} kvm-centos && chain --autofree ${version_url}/squashible-kvm-centos7 ||
 ##iseq ${ecopoiesis_boot_os} utility && chain --autofree ${version_url}/squashible-util ||
-goto post_plop
+goto post_plip
 
-:post_plop
+:post_plip
 echo
 echo Server variables retrieved from inventory are:
 echo
