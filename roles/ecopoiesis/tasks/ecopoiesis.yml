@@ -48,6 +48,11 @@
     dest: /etc/default/tftpd-hpa
   notify: restart tftpd-hpa service
 
+- name: Remove default apache2 config
+  file:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    state: absent
+
 - name: Install httpd miniplop config
   copy:
     src: plip.conf

@@ -18,6 +18,7 @@ ecopoiesis_distro_packages:
 
 ecopoiesis_pip_packages:
   - docker-py
+  - flask
 
 ipxe_distro_packages:
   - gcc
