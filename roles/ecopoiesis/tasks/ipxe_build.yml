@@ -54,7 +54,7 @@
 
 - name: Create iPXE file directory
   file:
-    path: /var/www/html/ipxe
+    path: "{{ ecopoiesis_root_dir }}/ipxe"
     state: directory
 
 - name: Copy iPXE files to http directory
