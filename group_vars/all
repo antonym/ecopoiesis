@@ -21,7 +21,7 @@
     dhcp_start: 172.16.120.50
     dhcp_end: 172.16.120.100
 
-  craton_url: 
-  craton_username:
-  craton_password: 
-  cratin_project_id:
+#  craton_url: 
+#  craton_username:
+#  craton_password: 
+#  craton_project_id:
