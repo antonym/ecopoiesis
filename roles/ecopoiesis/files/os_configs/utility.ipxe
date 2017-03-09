@@ -1,8 +1,7 @@
 #!ipxe
-# Utility [debug_util, firmware, oob_config, raid_configuration, discover]
+# Utility [debug_util, discover, firmware, oob_config, raid_configuration]
 
 :utility
-chain --autofree http://${terraform_host}/miniplop/versions/ipxe/squashible-util
 set dracut_ip ip=${mgmt_ip_address}::${mgmt_gateway_ip}:${mgmt_netmask}:utility-${hostname}:${mgmt_device}:none nameserver=${primary_dns}
 kernel http://images.squashible.com/images/squashible-ubuntu-16.04-minimal/vmlinuz
 module http://images.squashible.com/images/squashible-ubuntu-16.04-minimal/initrd.img
