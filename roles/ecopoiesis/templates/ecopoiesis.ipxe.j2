@@ -103,7 +103,7 @@ goto set_hostname
 :plip_retry
 sleep 10
 inc plip_retry_count
-iseq ${plip_retry_count} ${plip_retry_limit} && echo Retry limit hit... assuming Miniplip is unavailable... && goto localboot ||
+iseq ${plip_retry_count} ${plip_retry_limit} && echo Retry limit hit... assuming plip is unavailable... && goto localboot ||
 echo ${bold}Retrying request... (Attempt ${plip_retry_count})...${boldoff}
 chain --autofree http://${ecopoiesis_host}/${server_info} || goto plip_retry
 goto set_hostname
