@@ -8,7 +8,7 @@ ecopoiesis_distro_packages:
   - git
   - isc-dhcp-server
   - htop
-  - nginx
+  - libapache2-mod-wsgi
   - ntp
   - python-pip
   - syslinux
