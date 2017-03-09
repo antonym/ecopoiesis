@@ -4,7 +4,8 @@ craton_root_dir: /opt/craton
 ecopoiesis_root_dir: /opt/ecopoiesis 
 plip_root_dir: /opt/plip
 
-craton_url: 'http://{{ ecopoiesis_host }}:7780/v1'
-craton_username: 'set_craton_username'
-craton_password: 'set_craton_password'
-craton_project_id: 'set_craton_project_id'
+# hardcoded for docker
+craton_url: 'http://172.17.0.2:7780/v1'
+craton_username: 'demo'
+craton_password: 'demo'
+craton_project_id: 'b9f10eca66ac4c279c139d01e65f96b4'
