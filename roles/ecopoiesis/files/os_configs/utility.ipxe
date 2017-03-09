@@ -5,6 +5,6 @@
 #set dracut_ip ip=${mgmt_ip_address}::${mgmt_gateway_ip}:${mgmt_netmask}:utility-${hostname}:${mgmt_device}:none nameserver=${primary_dns}
 kernel http://${ecopoiesis_host}/images/squashible-ubuntu-16.04-minimal/vmlinuz
 module http://${ecopoiesis_host}/images/squashible-ubuntu-16.04-minimal/initrd.img
-imgargs vmlinuz root=live:http://${ecopoiesis_host}/images/squashible-ubuntu-16.04-minimal/rootfs.img rootflags="" ip=dhcp nomodeset rd.writable.fsimg rd.shell enforcing=0 playbook=${ecopoiesis_boot_status} profile=${ecopoiesis_boot_profile} ${console} modprobe.blacklist=mei_me switchname=${netX.lldp/systemname} switch_port=${netX.lldp/portid}
+imgargs vmlinuz root=live:http://${ecopoiesis_host}/images/squashible-ubuntu-16.04-minimal/rootfs.img ip=dhcp nomodeset rd.writable.fsimg rd.shell enforcing=0 playbook=${ecopoiesis_boot_status} profile=${ecopoiesis_boot_profile} ${console} modprobe.blacklist=mei_me switchname=${netX.lldp/systemname} switch_port=${netX.lldp/portid}
 boot
 goto validate_os
