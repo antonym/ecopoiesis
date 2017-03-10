@@ -18,3 +18,4 @@
     name: craton_api
     state: started
     image: craton_api:latest
+    ports: 0.0.0.0:7780:7780 
