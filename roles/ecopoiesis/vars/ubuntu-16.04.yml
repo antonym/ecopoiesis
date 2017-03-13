@@ -2,13 +2,13 @@
 dhcp_service: isc-dhcp-server
 tftpd_service: tftpd-hpa
 ecopoiesis_distro_packages:
-  - ansible
   - apache2
   - build-essential
   - git
   - isc-dhcp-server
   - htop
   - libapache2-mod-wsgi
+  - libssl-dev
   - ntp
   - python-pip
   - syslinux
@@ -17,6 +17,7 @@ ecopoiesis_distro_packages:
   - vim
 
 ecopoiesis_pip_packages:
+  - ansible
   - docker-py
   - flask
 
