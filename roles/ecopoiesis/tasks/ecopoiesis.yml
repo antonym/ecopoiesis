@@ -60,7 +60,7 @@
 
 - name: Ensure images directory created
   file:
-    path: "{{ ecopoiesis_root_dir }}/images/squashible-ubuntu-16.04-minimal"
+    path: "{{ ecopoiesis_root_dir }}/images/ecopoiesis-utility"
     state: directory
 
 - name: Retrieve ubuntu minimal live vmlinuz 
