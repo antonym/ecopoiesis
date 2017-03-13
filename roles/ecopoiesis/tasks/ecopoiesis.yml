@@ -65,15 +65,15 @@
 
 - name: Retrieve ubuntu minimal live vmlinuz 
   get_url:
-    url: http://images.squashible.com/images/squashible-ubuntu-16.04-minimal/vmlinuz
-    dest: "{{ ecopoiesis_root_dir }}/images/squashible-ubuntu-16.04-minimal/vmlinuz"
+    url: http://images.squashible.com/images/ecopoiesis-utility/vmlinuz
+    dest: "{{ ecopoiesis_root_dir }}/images/ecopoiesis-utility/vmlinuz"
 
 - name: Retrieve ubuntu minimal live initrd
   get_url:
-    url: http://images.squashible.com/images/squashible-ubuntu-16.04-minimal/initrd.img
-    dest: "{{ ecopoiesis_root_dir }}/images/squashible-ubuntu-16.04-minimal/initrd.img"
+    url: http://images.squashible.com/images/ecopoiesis-utility/initrd.img
+    dest: "{{ ecopoiesis_root_dir }}/images/ecopoiesis-utility/initrd.img"
 
 - name: Retrieve ubuntu minimal live rootfs
   get_url:
-    url: http://images.squashible.com/images/squashible-ubuntu-16.04-minimal/rootfs.img
-    dest: "{{ ecopoiesis_root_dir }}/images/squashible-ubuntu-16.04-minimal/rootfs.img"
+    url: http://images.squashible.com/images/ecopoiesis-utility/rootfs.img
+    dest: "{{ ecopoiesis_root_dir }}/images/ecopoiesis-utility/rootfs.img"
