@@ -28,10 +28,13 @@
     dest: "{{ craton_venv }}/exec"
     mode: 755
 
-- name: Create configuration directory
+- name: Create craton directories
   file:
-    path: /etc/craton
+    path: "{{ item }}"
     state: directory
+  with_items:
+    - /etc/craton
+    - /var/log/craton
 
 - name: Copy craton-api.conf to /etc/craton
   template:
@@ -62,7 +65,7 @@
     - FLUSH PRIVILEGES
 
 - name: Run craton dbsync upgrade
-  command: "{{ craton_venv }}/exec craton-dbsync --config-file=/craton/etc/craton-api.conf {{ item }}"
+  command: "{{ craton_venv }}/exec craton-dbsync --config-file=/etc/craton/craton-api.conf {{ item }}"
   with_items:
     - upgrade
     - bootstrap
