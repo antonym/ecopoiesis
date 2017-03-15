@@ -71,3 +71,14 @@
     - upgrade
     - bootstrap
   when: craton_db_created.changed
+
+- name: Install craton systemd unit file
+  template:
+    src: craton-api-systemd.j2
+    dest: /lib/systemd/system/craton-api.service
+
+- name: Enable systemd service
+  systemd:
+    name: craton-api.service
+    daemon_reload: yes
+    enabled: yes
