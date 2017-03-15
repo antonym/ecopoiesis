@@ -82,3 +82,4 @@
     name: craton-api.service
     daemon_reload: yes
     enabled: yes
+    state: started
