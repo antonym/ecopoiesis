@@ -27,3 +27,13 @@ ipxe_distro_packages:
   - git
   - liblzma-dev
   - syslinux
+
+craton_distro_packages:
+  - libmysqlclient-dev
+  - mariadb-client
+  - mariadb-server
+  - python-mysqldb
+  - python3-pip
+
+craton_pip_packages:
+  - virtualenv

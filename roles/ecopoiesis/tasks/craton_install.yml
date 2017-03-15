@@ -1,21 +1,20 @@
 ---
 
-- name: Checkout craton
-  git:
-    repo: https://github.com/openstack/craton.git
-    dest: "{{ craton_root_dir }}"
-    version: master
-    force: true
+- name: Install distro packages
+  package:
+    name: "{{ craton_distro_packages }}"
+    state: latest
 
-- name: Build craton docker image
-  docker_image:
-    path: "{{ craton_root_dir }}"
-    name: craton_api
-    tag: latest
+- name: Install pip packages
+  pip:
+    name: "{{ item }}"
+    executable: pip3
+    state: latest
+  with_items:
+    - "{{ craton_pip_packages }}"
 
-- name: Start craton docker image
-  docker:
-    name: craton_api
-    state: started
-    image: craton_api:latest
-    ports: 0.0.0.0:7780:7780 
+- name: Install craton into venv
+  pip:
+    name: git+https://github.com/openstack/craton.git#egg=craton
+    virtualenv: "/opt/craton-venv"
+    virtualenv_python: python3.5
