@@ -16,5 +16,5 @@
 - name: Install craton into venv
   pip:
     name: git+https://github.com/openstack/craton.git#egg=craton
-    virtualenv: "/opt/craton-venv"
+    virtualenv: "/opt/craton"
     virtualenv_python: python3.5
