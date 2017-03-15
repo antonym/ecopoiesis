@@ -18,3 +18,52 @@
     name: git+https://github.com/openstack/craton.git#egg=craton
     virtualenv: "/opt/craton"
     virtualenv_python: python3.5
+
+- set_fact:
+    craton_venv: /opt/craton
+
+- name: Copy venv exec to craton venv
+  template:
+    src: venv_exec.j2
+    dest: "{{ craton_venv }}/exec"
+    mode: 755
+
+- name: Create configuration directory
+  file:
+    path: /etc/craton
+    state: directory
+
+- name: Copy craton-api.conf to /etc/craton
+  template:
+    src: craton-api.conf.j2
+    dest: /etc/craton/craton-api.conf
+
+- name: Copy craton-api-paste.ini to /etc/craton
+  copy:
+    src: craton-api-paste.ini
+    dest: /etc/craton/craton-api-paste.ini
+
+- name: Create craton database
+  mysql_db:
+    name: craton
+    state: present
+  register: craton_db_created
+
+- name: Create craton user
+  mysql_user:
+    name: craton
+    password: craton
+    priv: "craton.*:ALL,GRANT"
+    state: present
+
+- name: Reload privilege tables
+  command: "mysql -ne '{{ item }}'"
+  with_items:
+    - FLUSH PRIVILEGES
+
+- name: Run craton dbsync upgrade
+  command: "{{ craton_venv }}/exec craton-dbsync --config-file=/craton/etc/craton-api.conf {{ item }}"
+  with_items:
+    - upgrade
+    - bootstrap
+  when: craton_db_created.changed
