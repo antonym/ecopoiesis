@@ -8,9 +8,11 @@ jobs:
     working_directory: ~/ecopoiesis
 
     steps:
-      - checkout
-      - run: |
-          sudo apt-install git python-setuptools python-pip
-          sudo pip install ansible
-          cd ecopoiesis
-          ansible-playbook -i localhost local.yml
+     - run: |
+         apt-get -qq update
+         apt install -y git python-setuptools python-pip libssl-dev libffi-dev
+         pip install ansible
+     - checkout
+     - run: |
+         cd ~/ecopoiesis
+         ansible-playbook -i localhost local.yml
