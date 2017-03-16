@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          sudo apt-instal python-setuptools python-pip
+          sudo apt-install git python-setuptools python-pip
           sudo pip install ansible
           cd ecopoiesis
           ansible-playbook -i localhost local.yml
