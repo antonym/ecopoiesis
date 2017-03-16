@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu:16.04
+        environment:
+          - ENV: CI
+    working_directory: ~/ecopoiesis
+
+    steps:
+      - checkout
+      - run: |
+          sudo apt-instal python-setuptools python-pip
+          sudo pip install ansible
+          cd ecopoiesis
+          ansible-playbook -i localhost local.yml
