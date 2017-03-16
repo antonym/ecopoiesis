@@ -36,7 +36,7 @@ paste_pipeline = local-auth
 
 [database]
 backend = sqlalchemy
-connection = mysql+pymysql://craton:craton@localhost/craton
+connection = mysql+pymysql://{{ craton_db_user }}:{{ craton_db_password }}@{{ craton_db_connection }}/{{ craton_db_name}}
 use_db_reconnect = false
 db_retry_interval = 1
 db_inc_retry_interval = true

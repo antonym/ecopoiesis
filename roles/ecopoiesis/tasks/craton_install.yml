@@ -48,16 +48,16 @@
 
 - name: Create craton database
   mysql_db:
-    name: craton
+    name: "{{ craton_db_name }}"
     state: present
     encoding: utf8
   register: craton_db_created
 
 - name: Create craton user
   mysql_user:
-    name: craton
-    password: craton
-    priv: "craton.*:ALL,GRANT"
+    name: "{{ craton_db_user }}"
+    password: "{{ craton_db_password }}"
+    priv: "{{ craton_db_name }}.*:ALL,GRANT"
     state: present
 
 - name: Reload privilege tables
