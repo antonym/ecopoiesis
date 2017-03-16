@@ -10,6 +10,7 @@ ecopoiesis_distro_packages:
   - libapache2-mod-wsgi
   - libssl-dev
   - ntp
+  - python-setuptools
   - python-pip
   - syslinux
   - tftpd-hpa
@@ -17,8 +18,8 @@ ecopoiesis_distro_packages:
   - vim
 
 ecopoiesis_pip_packages:
+  - pip
   - ansible
-  - docker-py
   - flask
 
 ipxe_distro_packages:
