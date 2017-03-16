@@ -46,6 +46,12 @@
     src: craton-api-paste.ini
     dest: /etc/craton/craton-api-paste.ini
 
+- name: Ensure mysql daemon started
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+    
 - name: Create craton database
   mysql_db:
     name: "{{ craton_db_name }}"
