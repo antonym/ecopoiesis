@@ -98,7 +98,7 @@ goto start
 :plip
 echo ${bold}Retrieving server boot configuration from plip...${boldoff}
 chain --autofree http://${ecopoiesis_host}/${server_info} || goto plip_retry
-goto set_hostname
+goto post_plip
 
 :plip_retry
 sleep 10
