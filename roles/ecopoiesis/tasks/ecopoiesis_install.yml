@@ -1,5 +1,13 @@
 ---
-- name: Install distro packages
+- name: Install system updates for Centos systems
+  yum: name=* state=latest update_cache=yes
+  when: ansible_distribution == "CentOS"
+
+- name: Install system updates for Ubuntu systems
+  apt: upgrade=dist update_cache=yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install ecopoiesis distro packages
   package:
     name: "{{ ecopoiesis_distro_packages }}"
     state: latest
