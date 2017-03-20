@@ -31,8 +31,8 @@ ipxe_distro_packages:
 
 craton_distro_packages:
   - libmysqlclient-dev
-  - mariadb-client
-  - mariadb-server
+  - mysql-server-5.7
+  - mysql-client-5.7
   - python-mysqldb
   - python3-pip
 
