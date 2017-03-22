@@ -46,37 +46,37 @@
     src: craton-api-paste.ini
     dest: /etc/craton/craton-api-paste.ini
 
-- name: Ensure mysql daemon started
-  service:
-    name: mysql
-    state: started
-    enabled: yes
+#- name: Ensure mysql daemon started
+#  service:
+#    name: mysql
+#    state: started
+#    enabled: yes
     
-- name: Create craton database
-  mysql_db:
-    name: "{{ craton_db_name }}"
-    state: present
-    encoding: utf8
-  register: craton_db_created
+#- name: Create craton database
+#  mysql_db:
+#    name: "{{ craton_db_name }}"
+#    state: present
+#    encoding: utf8
+#  register: craton_db_created
 
-- name: Create craton user
-  mysql_user:
-    name: "{{ craton_db_user }}"
-    password: "{{ craton_db_password }}"
-    priv: "{{ craton_db_name }}.*:ALL,GRANT"
-    state: present
+#- name: Create craton user
+#  mysql_user:
+#    name: "{{ craton_db_user }}"
+#    password: "{{ craton_db_password }}"
+#    priv: "{{ craton_db_name }}.*:ALL,GRANT"
+#    state: present
 
-- name: Reload privilege tables
-  command: "mysql -ne '{{ item }}'"
-  with_items:
-    - FLUSH PRIVILEGES
+#- name: Reload privilege tables
+#  command: "mysql -ne '{{ item }}'"
+#  with_items:
+#    - FLUSH PRIVILEGES
 
-- name: Run craton dbsync upgrade
-  command: "{{ craton_venv }}/exec craton-dbsync --config-file=/etc/craton/craton-api.conf {{ item }}"
-  with_items:
-    - upgrade
-    - bootstrap
-  when: craton_db_created.changed
+#- name: Run craton dbsync upgrade
+#  command: "{{ craton_venv }}/exec craton-dbsync --config-file=/etc/craton/craton-api.conf {{ item }}"
+#  with_items:
+#    - upgrade
+#    - bootstrap
+#  when: craton_db_created.changed
 
 - name: Install craton systemd unit file
   template:
