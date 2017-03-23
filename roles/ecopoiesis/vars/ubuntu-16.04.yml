@@ -22,6 +22,7 @@ ecopoiesis_pip_packages:
   - pip
   - ansible
   - flask
+  - requests
 
 ipxe_distro_packages:
   - gcc
