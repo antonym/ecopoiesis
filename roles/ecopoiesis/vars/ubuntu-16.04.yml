@@ -1,5 +1,6 @@
 ---
 dhcp_service: isc-dhcp-server
+http_service: apache2
 tftpd_service: tftpd-hpa
 ecopoiesis_distro_packages:
   - apache2

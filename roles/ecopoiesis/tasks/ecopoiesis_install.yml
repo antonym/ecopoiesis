@@ -65,6 +65,7 @@
   copy:
     src: plip.conf
     dest: /etc/apache2/sites-enabled/plip.conf
+  notify: reload http service
 
 - name: Ensure images directory created
   file:

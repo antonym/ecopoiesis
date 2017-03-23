@@ -1,5 +1,11 @@
 ---
 
+  - name: reload http service
+    service:
+      name: "{{ http_service }}"
+      state: reloaded
+    ignore_errors: true
+
   - name: restart dhcp service
     service:
       name: "{{ dhcp_service }}"

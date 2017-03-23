@@ -1,5 +1,6 @@
 ---
 dhcp_service: dhcpd
+http_service: httpd
 tftpd_service: xinetd
 ecopoiesis_distro_packages:
   - dhcp
