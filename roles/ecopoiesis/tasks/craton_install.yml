@@ -33,50 +33,63 @@
     path: "{{ item }}"
     state: directory
   with_items:
-    - /etc/craton
-    - /var/log/craton
+    - "{{ craton_config_dir }}"
+    - "{{ craton_log_dir }}"
 
-- name: Copy craton-api.conf to /etc/craton
+- name: Copy craton-api.conf to craton config dir
   template:
     src: craton-api.conf.j2
-    dest: /etc/craton/craton-api.conf
+    dest: "{{ craton_config_dir }}/craton-api.conf"
 
-- name: Copy craton-api-paste.ini to /etc/craton
+- name: Copy craton-api-paste.ini to craton config dir
   copy:
     src: craton-api-paste.ini
-    dest: /etc/craton/craton-api-paste.ini
+    dest: "{{ craton_config_dir }}/craton-api-paste.ini"
 
-#- name: Ensure mysql daemon started
-#  service:
-#    name: mysql
-#    state: started
-#    enabled: yes
+- name: Ensure mysql daemon started
+  service:
+    name: mysql
+    state: started
+    enabled: yes
     
-#- name: Create craton database
-#  mysql_db:
-#    name: "{{ craton_db_name }}"
-#    state: present
-#    encoding: utf8
-#  register: craton_db_created
+- name: Create craton database
+  mysql_db:
+    name: "{{ craton_db_name }}"
+    state: present
+    encoding: utf8
+  register: craton_db_created
 
-#- name: Create craton user
-#  mysql_user:
-#    name: "{{ craton_db_user }}"
-#    password: "{{ craton_db_password }}"
-#    priv: "{{ craton_db_name }}.*:ALL,GRANT"
-#    state: present
+- name: Create craton user
+  mysql_user:
+    name: "{{ craton_db_user }}"
+    password: "{{ craton_db_password }}"
+    priv: "{{ craton_db_name }}.*:ALL,GRANT"
+    state: present
 
-#- name: Reload privilege tables
-#  command: "mysql -ne '{{ item }}'"
-#  with_items:
-#    - FLUSH PRIVILEGES
+- name: Reload privilege tables
+  command: "mysql -ne '{{ item }}'"
+  with_items:
+    - FLUSH PRIVILEGES
 
-#- name: Run craton dbsync upgrade
-#  command: "{{ craton_venv }}/exec craton-dbsync --config-file=/etc/craton/craton-api.conf {{ item }}"
-#  with_items:
-#    - upgrade
-#    - bootstrap
-#  when: craton_db_created.changed
+- name: Run craton dbsync upgrade
+  command: "{{ craton_venv }}/exec craton-dbsync --config-file={{ craton_config_dir }}/craton-api.conf upgrade"
+  when: craton_db_created.changed
+
+- name: Run craton dbsync bootstrap
+  command: "{{ craton_venv }}/exec craton-dbsync --config-file={{ craton_config_dir }}/craton-api.conf bootstrap"
+  when: craton_db_created.changed
+  register: craton_bootstrap_output
+
+- name: Copy craton bootstrap output to file
+  copy:
+    content: "{{ craton_bootstrap_output.stdout }}"
+    dest: "{{ craton_bootstrap_config_file }}"
+  when: craton_db_created.changed
+
+- name: Load variables from file
+  include_vars:
+    file: "{{ craton_bootstrap_config_file }}"
+    name: craton
 
 - name: Install craton systemd unit file
   template:

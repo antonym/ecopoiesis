@@ -15,7 +15,7 @@
   tags:
     - always
 
+- include: craton_install.yml
 - include: ecopoiesis_install.yml
 - include: plip_install.yml
-- include: craton_install.yml
 - include: ipxe_install.yml
