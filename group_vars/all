@@ -1,25 +1,25 @@
 ---
-  ecopoiesis_host: 172.16.120.10
-  ecopoiesis_ip: 192.168.100.20
+  ecopoiesis_host: 10.127.5.110
+  ecopoiesis_ip: 10.127.5.110
   ecopoiesis_secondary_host: secondary.deploy-server.mycloud.com
   ecopoiesis_secondary_ip: 172.16.120.0
   region: cloud1
-  dhcp_next_server: 172.16.120.10
-  ecopoiesis_primary_net: 192.168.100.0
-  ecopoiesis_primary_nm: 255.255.255.0
+  dhcp_next_server: 10.127.5.110
+  ecopoiesis_primary_net: 10.127.4.0
+  ecopoiesis_primary_nm: 255.255.254.0
   ecopoiesis_secondary_net: 172.16.120.0
   ecopoiesis_secondary_nm: 255.255.255.0
   ecopoiesis_secondary_gw: 172.16.120.1
   mgmt_dns: 8.8.8.8,8.8.4.4
 
   dhcp_ranges:
-  - mgmt_domain: cloud1.mycloud.com
-    mgmt_network: 172.16.120.0
-    mgmt_netmask: 255.255.255.0
-    mgmt_gateway: 172.16.120.1
-    mgmt_broadcast: 172.16.120.255
-    dhcp_start: 172.16.120.50
-    dhcp_end: 172.16.120.100
+  - mgmt_domain: sat6.lab
+    mgmt_network: 10.127.4.0
+    mgmt_netmask: 255.255.254.0
+    mgmt_gateway: 10.127.4.1
+    mgmt_broadcast: 10.127.5.255
+    dhcp_start: 10.127.5.111
+    dhcp_end: 10.127.5.120
 
 #  craton_url: 
 #  craton_username:
