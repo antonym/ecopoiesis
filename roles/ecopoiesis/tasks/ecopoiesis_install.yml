@@ -86,3 +86,13 @@
   get_url:
     url: http://images.squashible.com/images/ecopoiesis-utility/rootfs.img
     dest: "{{ ecopoiesis_root_dir }}/images/ecopoiesis-utility/rootfs.img"
+
+- name: Ensure services enabled and started
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - "{{ dhcp_service }}"
+    - "{{ http_service }}"
+    - "{{ tftpd_service }}"
