@@ -19,7 +19,7 @@
 
 - name: Touch iPXE config local files
   file:
-    path: ""{{ ipxe_source_dir }}/src/config/local/{{ item }}"
+    path: "{{ ipxe_source_dir }}/src/config/local/{{ item }}"
     state: touch
   with_items:
   - console.h
