@@ -7,36 +7,36 @@
 
 - name: Checkout latest iPXE sources
   git:
-    repo: https://github.com/ipxe/ipxe.git
-    dest: /usr/src/ipxe
-    version: master
+    repo: "{{ ipxe_repo }}"
+    dest: "{{ ipxe_source_dir }}"
+    version: "{{ ipxe_branch }}"
     force: yes
 
 - name: Copy iPXE embedded script to iPXE source directory
   template:
      src: ipxe-embed.j2
-     dest: /usr/src/ipxe/src/ipxe-embed
+     dest: "{{ ipxe_source_dir }}/src/ipxe-embed"
 
 - name: Touch iPXE config local files
   file:
-    path: "{{ item }}"
+    path: ""{{ ipxe_source_dir }}/src/config/local/{{ item }}"
     state: touch
   with_items:
-  - /usr/src/ipxe/src/config/local/console.h
-  - /usr/src/ipxe/src/config/local/umalloc.h
-  - /usr/src/ipxe/src/config/local/nap.h
-  - /usr/src/ipxe/src/config/local/timer.h
-  - /usr/src/ipxe/src/config/local/branding.h
-  - /usr/src/ipxe/src/config/local/serial.h
-  - /usr/src/ipxe/src/config/local/reboot.h
-  - /usr/src/ipxe/src/config/local/sanboot.h
-  - /usr/src/ipxe/src/config/local/fault.h
-  - /usr/src/ipxe/src/config/local/dhcp.h
-  - /usr/src/ipxe/src/config/local/sideband.h
-  - /usr/src/ipxe/src/config/local/entropy.h
-  - /usr/src/ipxe/src/config/local/crypto.h
-  - /usr/src/ipxe/src/config/local/usb.h
-  - /usr/src/ipxe/src/config/local/settings.h
+  - console.h
+  - umalloc.h
+  - nap.h
+  - timer.h
+  - branding.h
+  - serial.h
+  - reboot.h
+  - sanboot.h
+  - fault.h
+  - dhcp.h
+  - sideband.h
+  - entropy.h
+  - crypto.h
+  - usb.h
+  - settings.h
 
 - name: Compile iPXE disks
   shell: "make {{ item }} EMBED=ipxe-embed"
@@ -49,7 +49,7 @@
   - bin/undionly.kpxe
   - bin-x86_64-efi/ipxe.efi
   args:
-    chdir: /usr/src/ipxe/src
+    chdir: "{{ ipxe_source_dir }}/src"
 
 
 - name: Create iPXE file directory
@@ -59,7 +59,7 @@
 
 - name: Copy iPXE files to http directory
   copy:
-    src: /usr/src/ipxe/src/bin/{{ item }}
+    src: "{{ ipxe_source_dir }}/src/bin/{{ item }}"
     dest: "{{ ecopoiesis_root_dir }}/ipxe/"
     remote_src: True
   with_items:
@@ -72,7 +72,7 @@
 
 - name: Copy EFI iPXE to directory
   copy:
-    src: /usr/src/ipxe/src/bin-x86_64-efi/{{ item }}
+    src: "{{ ipxe_source_dir }}/src/bin-x86_64-efi/{{ item }}"
     dest: "{{ ecopoiesis_root_dir }}/EFI/x86/"
     remote_src: True
   with_items:

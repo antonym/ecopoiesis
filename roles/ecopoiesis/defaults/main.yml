@@ -19,3 +19,8 @@ craton_db_connection: localhost
 craton_db_user: craton
 craton_db_password: craton
 craton_db_name: craton
+
+# ipxe
+ipxe_repo: https://github.com/ipxe/ipxe.git
+ipxe_source_dir: /usr/src/ipxe
+ipxe_branch: master
