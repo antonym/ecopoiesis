@@ -21,6 +21,8 @@ craton_db_password: craton
 craton_db_name: craton
 
 # ipxe
-ipxe_repo: https://github.com/ipxe/ipxe.git
+#ipxe_branch: master
+#ipxe_repo: https://github.com/ipxe/ipxe.git
+ipxe_branch: lldp_noconfig
+ipxe_repo: https://github.com/antonym/ipxe.git
 ipxe_source_dir: /usr/src/ipxe
-ipxe_branch: master
