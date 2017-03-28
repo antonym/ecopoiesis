@@ -27,6 +27,7 @@
     - configs
     - ipxe
     - EFI/x86
+    - logs
 
 - name: Setup motd
   template:
