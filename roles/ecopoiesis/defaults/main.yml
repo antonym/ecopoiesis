@@ -5,6 +5,7 @@ craton_bootstrap_config_file: /etc/craton/craton_bootstrap.cfg
 craton_config_dir: /etc/craton
 craton_log_dir: /var/log/craton
 craton_root_dir: /opt/craton
+craton_port: 7780
 ecopoiesis_root_dir: /opt/ecopoiesis 
 plip_root_dir: /opt/plip
 

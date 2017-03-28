@@ -15,7 +15,7 @@ set ecopoiesis_boot_profile rax_cloud
 
 # passing craton creds to utility image
 # TODO: find a more secure way of doing this
-set craton_url http://{{ ecopoiesis_host }}/v1
+set craton_url http://{{ ecopoiesis_host }}:{{ craton_port }}/v1
 set craton_username {{ craton.Username }}
 set craton_password {{ craton.APIKey }}
 set craton_project {{ craton.ProjectId }}
