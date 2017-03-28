@@ -91,12 +91,12 @@ echo -n Netmask: && read mgmt_netmask
 echo -n Gateway: && read mgmt_gateway_ip
 echo -n DNS: && read primary_dns
 :manual_input_settings
-echo -n Server Number: && read srv_num
+echo -n Host ID: && read host_id
 echo -n Ecopoiesis_Boot_OS Name (ubuntu_xenial): && read ecopoiesis_boot_os
 echo -n Ecopoiesis_Boot_OS_Version Name: && read ecopoiesis_boot_os_version
 echo -n Ecopoiesis_Boot_Status Name (provision): && read ecopoiesis_boot_status
 echo -n Ecopoiesis_Boot_Profile: && read ecopoiesis_boot_profile
-set name ${srv_num}
+set name ${host_id}
 goto set_hostname
 
 :netboot_xyz
@@ -147,7 +147,7 @@ echo Model................${smbios/1.5.0}
 echo BIOS.................${smbios/0.5.0}
 echo MGMT Device..........${mgmt_device}
 echo MAC..................${netX/mac}
-echo Server Number........${srv_num}
+echo Server Number........${host_id}
 echo IP Address...........${mgmt_ip_address}
 echo Netmask..............${mgmt_netmask}
 echo Gateway..............${mgmt_gateway_ip}
