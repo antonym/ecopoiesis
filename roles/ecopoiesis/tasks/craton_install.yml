@@ -65,11 +65,13 @@
     password: "{{ craton_db_password }}"
     priv: "{{ craton_db_name }}.*:ALL,GRANT"
     state: present
+  when: craton_db_created.changed
 
 - name: Reload privilege tables
   command: "mysql -ne '{{ item }}'"
   with_items:
     - FLUSH PRIVILEGES
+  when: craton_db_created.changed
 
 - name: Run craton dbsync upgrade
   command: "{{ craton_venv }}/exec craton-dbsync --config-file={{ craton_config_dir }}/craton-api.conf upgrade"
