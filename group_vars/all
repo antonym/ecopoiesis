@@ -19,7 +19,7 @@
     mgmt_gateway: 10.127.4.1
     mgmt_broadcast: 10.127.5.255
     dhcp_start: 10.127.5.111
-    dhcp_end: 10.127.5.120
+    dhcp_end: 10.127.5.200
 
 #  craton_url: 
 #  craton_username:

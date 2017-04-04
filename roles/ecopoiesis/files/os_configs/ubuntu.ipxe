@@ -28,7 +28,7 @@ set mirror mirror.rackspace.com
 set mirrorcfg mirror/suite=${ecopoiesis_boot_os_version} mirror/country=manual mirror/http/hostname=${mirror} mirror/http/directory=/ubuntu/
 set netcfg netcfg/get_ipaddress=${mgmt_ip_address} netcfg/get_netmask=${mgmt_netmask} netcfg/get_gateway=${mgmt_gateway_ip} netcfg/get_nameservers=${primary_dns} netcfg/confirm_static=true netcfg/choose_interface=auto netcfg/disable_autoconfig=true netcfg/link_wait_timeout=60
 set dir ubuntu/dists/${ecopoiesis_boot_os_version}-updates/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64
-kernel http://${mirror}/${dir}/linux ${netcfg} ${mirrorcfg} auto=true priority=critical preseed/url=http://${ecopoiesis_host}/plip/pxe/configs/${ecopoiesis_boot_os}-${ecopoiesis_boot_os_version}-${ecopoiesis_boot_profile}?number=${host_id} console=ttyS1,115200n8 console=tty0
+kernel http://${mirror}/${dir}/linux ${netcfg} ${mirrorcfg} auto=true priority=critical preseed/url=http://${ecopoiesis_host}/plip/pxe/configs/${ecopoiesis_boot_os}-${ecopoiesis_boot_os_version}-${ecopoiesis_boot_profile}?number=${host_id} ${console}
 initrd http://${mirror}/${dir}/initrd.gz
 boot
 goto validate_os
