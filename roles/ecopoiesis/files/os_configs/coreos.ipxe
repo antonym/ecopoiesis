@@ -27,7 +27,7 @@ goto validate_os
 :install_os
 set base-url http://${ecopoiesis_boot_os_version}.release.core-os.net/amd64-usr/current
 set networking ip=${mgmt_ip_address}::${mgmt_gateway_ip}:${mgmt_netmask}:thisisatest:eno2:none[:${primary_dns}[:${secondary_dns}]]
-kernel ${base-url}/coreos_production_pxe.vmlinuz coreos.config.url=http://${ecopoiesis_host}/plip/pxe/configs/${ecopoiesis_boot_os}-${ecopoiesis_boot_os_version}-${ecopoiesis_boot_profile}?number=${host_id} ${console} ${networking}
+kernel ${base-url}/coreos_production_pxe.vmlinuz coreos.config.url=http://${ecopoiesis_host}/plip/pxe/configs/${ecopoiesis_boot_os}-${ecopoiesis_boot_os_version}-${ecopoiesis_boot_profile}?number=${host_id} ${console} ${networking} coreos.first_boot=1 coreos.autologin
 initrd ${base-url}/coreos_production_pxe_image.cpio.gz
 boot
 goto validate_os
