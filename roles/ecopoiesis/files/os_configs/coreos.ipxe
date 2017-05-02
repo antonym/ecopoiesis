@@ -1,0 +1,32 @@
+#!ipxe
+# CoreOS Container Linux
+
+:validate_os
+iseq ${ecopoiesis_boot_os_version} stable && goto validate_status ||
+iseq ${ecopoiesis_boot_os_version} beta && goto validate_status ||
+iseq ${ecopoiesis_boot_os_version} alpha && goto validate_status ||
+goto reload_ecopoiesis
+
+:validate_status
+iseq ${ecopoiesis_operational_status} production && goto localboot ||
+iseq ${ecopoiesis_boot_status} install_os && goto install_os ||
+iseq ${ecopoiesis_operational_status} provisioning && goto localboot ||
+iseq ${ecopoiesis_boot_status} localboot && goto localboot ||
+goto reload_ecopoiesis
+
+:reload_ecopoiesis
+chain --autofree --replace http://${ecopoiesis_host}/ecopoiesis.ipxe
+exit
+
+:localboot
+echo Booting locally...
+sanboot --no-describe --drive 0x80 ||
+exit
+goto validate_os
+
+:install_os
+set base-url http://${ecopoiesis_boot_os_version}.release.core-os.net/amd64-usr/current
+kernel ${base-url}/coreos_production_pxe.vmlinuz coreos.config.url=http://${ecopoiesis_host}/plip/pxe/configs/${ecopoiesis_boot_os}-${ecopoiesis_boot_os_version}-${ecopoiesis_boot_profile}?number=${host_id} ${console}
+initrd ${base-url}/coreos_production_pxe_image.cpio.gz
+boot
+goto validate_os
