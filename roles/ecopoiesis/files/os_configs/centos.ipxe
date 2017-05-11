@@ -24,9 +24,9 @@ goto validate_os
 
 :install_os
 set mirror mirror.rackspace.com
-set dir centos/${ecopoiesis_boot_os_version}
+set dir centos/${ecopoiesis_boot_os_version}/os/x86_64
 set netcfg ip=${mgmt_ip_address}::${mgmt_gateway_ip}:${mgmt_netmask}:${hostname}::none nameserver=${primary_dns}
-kernel http://${mirror}/${dir}/os/x86_64/images/pxeboot/vmlinuz repo=http://${mirror}/${dir} ${netcfg} ks=http://${ecopoiesis_host}/plip/pxe/configs/${ecopoiesis_boot_os}-${ecopoiesis_boot_os_version}-${ecopoiesis_boot_profile}?number=${host_id} ${console}
-initrd http://${mirror}/${dir}/os/x86_64/images/pxeboot/initrd.img
+kernel http://${mirror}/${dir}/images/pxeboot/vmlinuz repo=http://${mirror}/${dir} ${netcfg} ks=http://${ecopoiesis_host}/plip/pxe/configs/${ecopoiesis_boot_os}-${ecopoiesis_boot_os_version}-${ecopoiesis_boot_profile}?number=${host_id} ${console}
+initrd http://${mirror}/${dir}/images/pxeboot/initrd.img
 boot
 goto validate_os
