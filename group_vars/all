@@ -4,6 +4,7 @@
   ecopoiesis_secondary_host: secondary.deploy-server.mycloud.com
   ecopoiesis_secondary_ip: 172.16.120.0
   region: cloud1
+  hpsum_key:
   dhcp_next_server: 10.127.5.110
   ecopoiesis_primary_net: 10.127.4.0
   ecopoiesis_primary_nm: 255.255.254.0
